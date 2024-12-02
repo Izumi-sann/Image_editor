@@ -1,9 +1,12 @@
-there's no much to say
-that is just a image editor which permit the user to modify an image:
-  -colors, you can modify the colors of the image(RGB)
-  -you can invert the image's colors
-  -you can now change the orientation
+# Image Editor
 
-TODO
-  -rotate image in all directions
-  -add othe colors inversion method(other than invert)
+There's not much to say; it's just an image editor that permits the user to modify an image:
+
+## Features
+- **Colors:** You can modify the colors of the image (RGB).
+- **Invert Colors:** You can invert the image's colors.
+- **Orientation:** You can now change the orientation.
+
+## TODO
+- Rotate the image in all directions.
+- Add other color inversion methods (other than invert).
