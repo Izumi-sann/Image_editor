@@ -18,7 +18,10 @@
  * 
  */
 /*TODO
- * one other color modifier
+ * reset color values when new image laod
+ * return to previows
+ * max 1 sepia
+ * bug fix: when invert colors messes up the color values
  */
 
 using System.Drawing;
@@ -45,7 +48,7 @@ namespace _ModificaImmagine_29_11_24
         private void Form1_Load(object sender, EventArgs e) { }
 
 
-        //******** main functions ********//
+//******** main functions ********//
         private void LoadImage(object sender, EventArgs e) //central function to load the image onto the app
         {
             try { ImagePath = File_dialog_search(); }
@@ -74,7 +77,7 @@ namespace _ModificaImmagine_29_11_24
              * to mantain the correct orientation of displayed image we need to reverse "base_image" if needed before changing colors, since we start from it.
              */
             //here we change the orientation of "base_image" to correctly change color after
-            void GetImageReady()
+            void Get_BaseImage_Ready()
             {
                 if (orientation_counter[0])
                 {
@@ -92,12 +95,21 @@ namespace _ModificaImmagine_29_11_24
             
             switch (tag) {
                 case "change_color":
-                    GetImageReady();//change orientation of "base_image" since we use that one to change colors, and we need to set the orientation as the one displayed
+                    ChangeColorValues(sender);//modify the color values in colorValuesRGB
+                    Get_BaseImage_Ready();//change orientation of "base_image" since we use that one to change colors, and we need to set the orientation as the one displayed
                     ModifyImageColors(sender, "set_values");//the colors are changed here
                     break;
-                case "invert_colors":
-                    GetImageReady();//change orientation of "base_image" since we use that one to change colors, and we need to set the orientation as the one displayed
+                case "invert_filter":
+                    Get_BaseImage_Ready();//change orientation of "base_image" since we use that one to change colors, and we need to set the orientation as the one displayed
                     ModifyImageColors(sender, "invert");//the colors are changed here
+
+                    base_image = PictureBox.Image;
+                    break;
+                case "sepia_filter":
+                    Get_BaseImage_Ready();
+                    ModifyImageColors(sender, "sepia");
+
+                    base_image = PictureBox.Image;
                     break;
                 case "reverse_vertical":
                     Image verticalFlippedImage = PictureBox.Image;//we can't directly pass PictureBox.Image with ref, so we use a temporary variable
@@ -122,14 +134,13 @@ namespace _ModificaImmagine_29_11_24
         /// used to manage every function regarding modifing the image's colors, invert colors or set colors
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="option"> tells which function to use, can be "set_values" or "invert_colors"</param>
+        /// <param name="option"> tells which function to use, can be "set_values" or "invert" or "sepia"</param>
         private void ModifyImageColors(object sender, string option)//used in whichever case i change the image's colors
         {
             EnableButtons("disable_processing");
             Cursor.Current = Cursors.WaitCursor;
 
-            ChangeColorValues(sender);
-            Bitmap MyBitmap = option == "set_values" ? new Bitmap(base_image) : new Bitmap(PictureBox.Image);//crea matrice bitmap
+            Bitmap MyBitmap = option == "set_values" ? new Bitmap(base_image) : new Bitmap(PictureBox.Image);//crea matrice bitmap. se bisogna cambiare colore con i singoli valori usa base_image, in caso contrario PicturBox.Image
             Bitmap pixel_matrix = ModifyColorsMatrix(MyBitmap, option);//modifica colori pixel matrice
             Image modified_image = assemble_image(pixel_matrix);//riassebla la matrice in un oggetto Image
             PictureBox.Image = modified_image;
@@ -141,7 +152,7 @@ namespace _ModificaImmagine_29_11_24
         /// <summary>
         /// used to manage every function regarding modifing the image's colors, invert colors or set colors
         /// </summary>
-        /// <param name="orientation">the orientation we want, can be "vertical" or "horizontal"</param>
+        /// <param name="orientation">the orientation we need, can be "vertical" or "horizontal"</param>
         /// <param name="toReverse"> an image to reverse, since it doesn't directly use PictureBox.Image</param>
         private void ModifyImageOrientation(string orientation, ref Image toReverse)//used if i need to change orientation
         {
@@ -201,7 +212,7 @@ namespace _ModificaImmagine_29_11_24
         }
 
 
-        //******** other utility functions ********//
+//******** other utility functions ********//
         private string File_dialog_search()//load function; returns image path
         {
             string path;
@@ -253,19 +264,24 @@ namespace _ModificaImmagine_29_11_24
         }
 
         //the following are used to modify the image color, both using colorValuesRGB(SetColorValuesMatrix) or inverting the colors(InvertColorsMatrix)
-        
+
         /// <summary>
-        /// used for those function which need to modify the colors of the image, in this case uses SetColorsValuesMatrix(colorValuesRGB) and InvertColorsMatrix 
+        /// Used for those functions which need to modify the colors of the image. 
+        /// This function uses SetColorValuesMatrix(colorValuesRGB) , ApplyInvertFilter and ApplySepiaFilter.
         /// </summary>
-        /// <param name="MyBitmap"></param>
-        /// <param name="option"></param>
-        /// <returns>return the modified BitMap object passed to it</returns>
+        /// <param name="MyBitmap">The bitmap image to be modified.</param>
+        /// <param name="option">The option indicating the type of modification: "set_values" to set color values, "invert_colors" to invert colors, "sepia" to apply sepia filter</param>
+        /// <returns>Returns the modified Bitmap object passed to it.</returns>
         private Bitmap ModifyColorsMatrix(Bitmap MyBitmap, string option)
         {
-            if (option == "set_values")
-                return SetColorValuesMatrix(MyBitmap);
-            else if (option == "invert_colors")
-                return InvertColorsMatrix(MyBitmap);
+            switch (option) {
+                case "set_values":
+                    return SetColorValuesMatrix(MyBitmap);
+                case "invert":
+                    return ApplyInvertFilter(MyBitmap);
+                case "sepia":
+                    return ApplySepiaFilter(MyBitmap);
+            }
 
             throw new ArgumentException("Invalid option or missing parameters");
         }
@@ -297,7 +313,7 @@ namespace _ModificaImmagine_29_11_24
         /// </summary>
         /// <param name="MyBitmap"></param>
         /// <returns>return the modified BitMap object passed to it</returns>
-        private Bitmap InvertColorsMatrix(Bitmap MyBitmap)
+        private Bitmap ApplyInvertFilter(Bitmap MyBitmap)
         {
             int pixel_width = MyBitmap.Width;
             int pixel_height = MyBitmap.Height;
@@ -307,11 +323,66 @@ namespace _ModificaImmagine_29_11_24
                 for (int y = 0; y < pixel_height; y++)
                 {
                     Color pixel_color = MyBitmap.GetPixel(x, y);
+
+                    //set new color
                     Color new_pixel_color = InvertColorPixel(pixel_color);
                     MyBitmap.SetPixel(x, y, new_pixel_color);
                 }
             }
             return MyBitmap;
+
+            //modify pixel
+            Color InvertColorPixel(Color pixel_color)
+            {
+                // Invert the color values
+                int red_value = 255 - pixel_color.R;
+                int green_value = 255 - pixel_color.G;
+                int blue_value = 255 - pixel_color.B;
+
+                Color new_pixel = Color.FromArgb(red_value, green_value, blue_value);
+
+                return new_pixel;
+            }
+        }
+
+        /// <summary>
+        /// apply the "sepia" filter to the passed image. 
+        /// this should use a BitMap created from the shown image
+        /// </summary>
+        /// <param name="MyBitmap"></param>
+        /// <returns>return the modified BitMap object passed to it</returns>
+        private Bitmap ApplySepiaFilter(Bitmap MyBitmap)
+        {
+            int pixel_width = MyBitmap.Width;
+            int pixel_height = MyBitmap.Height;
+
+            for (int x = 0; x < pixel_width; x++)
+            {
+                for (int y = 0; y < pixel_height; y++)
+                {
+                    Color pixel_color = MyBitmap.GetPixel(x, y);
+                    
+                    //set new color
+                    Color sepia_color = SepiaColorPixel(pixel_color);
+                    MyBitmap.SetPixel(x, y, sepia_color);
+                }
+            }
+            return MyBitmap;
+
+            Color SepiaColorPixel(Color pixel_color) {
+                // Calculate new color values
+                int red_value = (int)(0.393 * pixel_color.R + 0.769 * pixel_color.G + 0.189 * pixel_color.B);
+                int green_value = (int)(0.349 * pixel_color.R + 0.686 * pixel_color.G + 0.168 * pixel_color.B);
+                int blue_value = (int)(0.272 * pixel_color.R + 0.534 * pixel_color.G + 0.131 * pixel_color.B);
+
+                // Clamp the values to be within the valid range [0, 255]
+                red_value = Math.Clamp(red_value, 0, 255);
+                green_value = Math.Clamp(green_value, 0, 255);
+                blue_value = Math.Clamp(blue_value, 0, 255);
+
+                Color sepiaColor = Color.FromArgb(red_value, green_value, blue_value);
+                return sepiaColor;
+            }
         }
 
         /// <summary>
@@ -324,23 +395,6 @@ namespace _ModificaImmagine_29_11_24
             int red_value = Math.Clamp(pixel_color.R + colorValuesRGB[0], 0, 255);
             int green_value = Math.Clamp(pixel_color.G + colorValuesRGB[1], 0, 255);
             int blue_value = Math.Clamp(pixel_color.B + colorValuesRGB[2], 0, 255);
-
-            Color new_pixel = Color.FromArgb(red_value, green_value, blue_value);
-
-            return new_pixel;
-        }
-
-        /// <summary>
-        /// invert the passed pixel(Color)
-        /// </summary>
-        /// <param name="pixel_color"></param>
-        /// <returns>a Color object which represents the new pixel</returns>
-        private Color InvertColorPixel(Color pixel_color)
-        {
-            // Invert the color values
-            int red_value = 255 - pixel_color.R;
-            int green_value = 255 - pixel_color.G;
-            int blue_value = 255 - pixel_color.B;
 
             Color new_pixel = Color.FromArgb(red_value, green_value, blue_value);
 
@@ -429,7 +483,8 @@ namespace _ModificaImmagine_29_11_24
                     Reverse_orientation_Horizontal.Enabled = false;
                     Reverse_orientation_Vertical.Enabled = false;
 
-                    Invert_colors.Enabled = false;
+                    Invert_filter.Enabled = false;
+                    Sepia_filter.Enabled = false;
                     break;
 
                 case "enable_all":
@@ -447,7 +502,9 @@ namespace _ModificaImmagine_29_11_24
                     Reverse_orientation_Horizontal.Enabled = true;
                     Reverse_orientation_Vertical.Enabled = true;
 
-                    Invert_colors.Enabled = true;
+                    Invert_filter.Enabled = true;
+                    Sepia_filter.Enabled = true;
+
                     break;
 
             }

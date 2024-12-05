@@ -31,3 +31,4 @@ C:\Users\slega\Desktop\C#\esercizi_scuola\esercizi_lezione\Lab\-ModificaImmagine
 C:\Users\slega\Desktop\C#\esercizi_scuola\esercizi_lezione\Lab\-ModificaImmagine_29-11-24\-ModificaImmagine_29-11-24\obj\Debug\net6.0-windows\-ModificaImmagine_29-11-24.pdb
 C:\Users\slega\Desktop\C#\esercizi_scuola\esercizi_lezione\Lab\-ModificaImmagine_29-11-24\-ModificaImmagine_29-11-24\obj\Debug\net6.0-windows\-ModificaImmagine_29-11-24.genruntimeconfig.cache
 C:\Users\slega\Desktop\C#\esercizi_scuola\esercizi_lezione\Lab\-ModificaImmagine_29-11-24\-ModificaImmagine_29-11-24\obj\Debug\net6.0-windows\ref\-ModificaImmagine_29-11-24.dll
+C:\Users\slega\Desktop\C#\esercizi_scuola\esercizi_lezione\Lab\-ModificaImmagine_29-11-24\-ModificaImmagine_29-11-24\obj\Debug\net6.0-windows\-ModificaImmagine_29-11-24.sourcelink.json
