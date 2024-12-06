@@ -20,8 +20,6 @@
 /*TODO
  * reset color values when new image laod
  * return to previows
- * max 1 sepia
- * bug fix: when invert colors messes up the color values
  */
 
 using System.Drawing;
@@ -34,32 +32,51 @@ namespace _ModificaImmagine_29_11_24
 {
     public partial class Form1 : Form
     {
-        //******** main variables ********//
-        static int[] colorValuesRGB = new int[] { 0, 0, 0 };//modificatori dei valori red, green, blue
-        static string ImagePath = "";
-        static Image base_image; //una copia dell'immagine senza modifiche(con i ribaltamenti) per risolvere il problema di modifica dei colori
+//******** main variables ********//
+        int[] colorValuesRGB = new int[] { 0, 0, 0 };//modificatori dei valori red, green, blue
+        string ImagePath = "";
+        Image base_image; //una copia dell'immagine senza modifiche(con i ribaltamenti) per risolvere il problema di modifica dei colori
 
-        //un contatore per verificare se l'immagine è stata routata verticalmente o orizzontalmente;
+        //un contatore per verificare se l'immagine è stata routata verticalmente o orizzontalmente o invertita;
         //è necessario quando si va a modificare i colori dell'immagine, siccome tale funzione usa "base_image" per settare i nuovi colori, e pertanto è prima da ruotare se necessario
-        static bool[] orientation_counter = new bool[] { false, false };//vertical, horizontal
+        bool[] orientation_flag = new bool[] { false, false };//vertical, horizontal
+        bool invert_flag = false;
+
+        //salvataggi delle modifiche per backtraking, salva base_image e PictureBox.Image, l'immagine è salvata per ogni cambiamento, per un massimo di 20 passi
+        List<(Image base_image, Image picturebox_image)> Image_versions;
+        int version_counter = 0;
 
         public Form1() { InitializeComponent(); }
 
         private void Form1_Load(object sender, EventArgs e) { }
 
 
-//******** main functions ********//
+//**************** MAIN FUNCTIONS ****************//
         private void LoadImage(object sender, EventArgs e) //central function to load the image onto the app
         {
             try { ImagePath = File_dialog_search(); }
             catch { return; }
 
+            //change form caption
             Text = $"image - {ImagePath} - saved";
 
+            //load image
             PictureBox.Load(ImagePath);
             base_image = new Bitmap(ImagePath);
 
+            //insert base_image as the first version
+            Image_versions = new List<(Image base_image, Image picturebox_image)>();
+            Image_versions.Add((base_image, PictureBox.Image));
+            version_counter = 0;
+
+            //enable various buttons
             EnableButtons("enable_all");
+
+            //set the color values and labels
+            colorValuesRGB = new int[] { 0, 0, 0 };
+            red_value_output.Text = "0";
+            green_value_output.Text = "0";
+            blue_value_output.Text = "0";
         }
 
         /// <summary>
@@ -79,16 +96,21 @@ namespace _ModificaImmagine_29_11_24
             //here we change the orientation of "base_image" to correctly change color after
             void Get_BaseImage_Ready()
             {
-                if (orientation_counter[0])
+                if (orientation_flag[0])
                 {
                     ModifyImageOrientation("vertical", ref base_image);
-                    orientation_counter[0] = false;
+                    orientation_flag[0] = false;
                 }
-                if (orientation_counter[1])
+                if (orientation_flag[1])
                 {
                     ModifyImageOrientation("horizontal", ref base_image);
-                    orientation_counter[1] = false;
+                    orientation_flag[1] = false;
                 }
+                if (invert_flag) {
+                    base_image = assemble_image(ApplyInvertFilter(new Bitmap(base_image)));
+                    invert_flag = !invert_flag;
+                }
+
             }
 
             string tag = ((Button)sender).Tag.ToString();
@@ -102,32 +124,38 @@ namespace _ModificaImmagine_29_11_24
                 case "invert_filter":
                     Get_BaseImage_Ready();//change orientation of "base_image" since we use that one to change colors, and we need to set the orientation as the one displayed
                     ModifyImageColors(sender, "invert");//the colors are changed here
-
-                    base_image = PictureBox.Image;
+                    invert_flag = !invert_flag;
                     break;
                 case "sepia_filter":
                     Get_BaseImage_Ready();
                     ModifyImageColors(sender, "sepia");
-
-                    base_image = PictureBox.Image;
                     break;
                 case "reverse_vertical":
                     Image verticalFlippedImage = PictureBox.Image;//we can't directly pass PictureBox.Image with ref, so we use a temporary variable
                     ModifyImageOrientation("vertical", ref verticalFlippedImage);
                     PictureBox.Image = verticalFlippedImage;
-                    orientation_counter[0] = !orientation_counter[0];
+                    orientation_flag[0] = !orientation_flag[0];
                     break;
                 case "reverse_horizontal":
                     Image horizontalFlippedImage = PictureBox.Image;//we can't directly pass PictureBox.Image with ref, so we use a temporary variable
                     ModifyImageOrientation("horizontal", ref horizontalFlippedImage);
                     PictureBox.Image = horizontalFlippedImage;
-                    orientation_counter[1] = !orientation_counter[1];
+                    orientation_flag[1] = !orientation_flag[1];
                     break;
             }
 
             if (!Text.Contains("not saved"))
                 Text = $"image - {ImagePath} - not saved";
-            
+
+            //manage image version
+            try {
+                Image_versions[version_counter+1] = (base_image, PictureBox.Image);
+            } catch { 
+                Image_versions.Add((base_image, PictureBox.Image));
+            }
+
+            version_counter++;
+            EnableButtons("version_counter");
         }
 
         /// <summary>
@@ -212,7 +240,7 @@ namespace _ModificaImmagine_29_11_24
         }
 
 
-//******** other utility functions ********//
+//**************** UTILITY FUNCTIONS ****************//
         private string File_dialog_search()//load function; returns image path
         {
             string path;
@@ -263,7 +291,8 @@ namespace _ModificaImmagine_29_11_24
             blue_value_output.Text = colorValuesRGB[2].ToString();
         }
 
-        //the following are used to modify the image color, both using colorValuesRGB(SetColorValuesMatrix) or inverting the colors(InvertColorsMatrix)
+
+    //the following are used to modify the image color, both using colorValuesRGB(SetColorValuesMatrix) or inverting the colors(InvertColorsMatrix)
 
         /// <summary>
         /// Used for those functions which need to modify the colors of the image. 
@@ -306,6 +335,17 @@ namespace _ModificaImmagine_29_11_24
                 }
             }
             return MyBitmap;
+
+            Color ModifyColorPixel(Color pixel_color)
+            {
+                int red_value = Math.Clamp(pixel_color.R + colorValuesRGB[0], 0, 255);
+                int green_value = Math.Clamp(pixel_color.G + colorValuesRGB[1], 0, 255);
+                int blue_value = Math.Clamp(pixel_color.B + colorValuesRGB[2], 0, 255);
+
+                Color new_pixel = Color.FromArgb(red_value, green_value, blue_value);
+
+                return new_pixel;
+            }
         }
 
         /// <summary>
@@ -385,22 +425,8 @@ namespace _ModificaImmagine_29_11_24
             }
         }
 
-        /// <summary>
-        /// modify the passed pixel(Color) with colorValuesRGB's values
-        /// </summary>
-        /// <param name="pixel_color"></param>
-        /// <returns>a Color object which represents the new pixel</returns>
-        private Color ModifyColorPixel(Color pixel_color)
-        {
-            int red_value = Math.Clamp(pixel_color.R + colorValuesRGB[0], 0, 255);
-            int green_value = Math.Clamp(pixel_color.G + colorValuesRGB[1], 0, 255);
-            int blue_value = Math.Clamp(pixel_color.B + colorValuesRGB[2], 0, 255);
 
-            Color new_pixel = Color.FromArgb(red_value, green_value, blue_value);
-
-            return new_pixel;
-        }
-
+    //the following are used to modify the orientation of the image
         /// <summary>
         /// this function is used to modify the image orientation both horizontally and vertically.
         /// </summary>
@@ -447,6 +473,8 @@ namespace _ModificaImmagine_29_11_24
 
         }
 
+
+//**************** OTHER METHODS ****************//
         /// <summary>
         /// transform the passed BitMap into a Image object
         /// </summary>
@@ -458,6 +486,18 @@ namespace _ModificaImmagine_29_11_24
             return converted_image;
         }
 
+        private void GetChange(object sender, EventArgs e) {
+            string todo = ((Button)sender).Name;
+            version_counter = todo == "Undo" ? version_counter-1 : version_counter+1;
+
+            (Image base_image_last, Image picturebox_image_last) recod = Image_versions[version_counter];//last saved
+            base_image = recod.base_image_last;
+            PictureBox.Image = recod.picturebox_image_last;
+
+            EnableButtons("version_counter");
+        }
+
+
         /// <summary>
         /// used to enable or disable certain buttons, based on needs. can be "disable_processing" or "enable_all"
         /// </summary>
@@ -465,7 +505,6 @@ namespace _ModificaImmagine_29_11_24
         /// <returns>a Color object which represents the new pixel</returns>
         private void EnableButtons(string option)
         {
-
             switch (option)
             {
                 case "disable_processing":
@@ -485,6 +524,9 @@ namespace _ModificaImmagine_29_11_24
 
                     Invert_filter.Enabled = false;
                     Sepia_filter.Enabled = false;
+
+                    Undo.Enabled = false;
+                    Redo.Enabled = false;
                     break;
 
                 case "enable_all":
@@ -505,8 +547,15 @@ namespace _ModificaImmagine_29_11_24
                     Invert_filter.Enabled = true;
                     Sepia_filter.Enabled = true;
 
+                    Undo.Enabled = version_counter > 0 ? true : false;
+                    Redo.Enabled = version_counter < Image_versions.Count-1 ? true : false;
+
                     break;
 
+                case "version_counter":
+                    Undo.Enabled = version_counter > 0 ? true : false;
+                    Redo.Enabled = version_counter < Image_versions.Count - 1 ? true : false;
+                    break;
             }
         }
     

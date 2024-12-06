@@ -29,7 +29,10 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            Redo = new Button();
+            Undo = new Button();
             groupBox3 = new GroupBox();
+            Sepia_filter = new Button();
             Invert_filter = new Button();
             groupBox2 = new GroupBox();
             Reverse_orientation_Horizontal = new Button();
@@ -53,7 +56,6 @@
             save_image = new Button();
             load_image = new Button();
             PictureBox = new PictureBox();
-            Sepia_filter = new Button();
             panel1.SuspendLayout();
             groupBox3.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -66,6 +68,8 @@
             // panel1
             // 
             panel1.BackColor = SystemColors.ActiveBorder;
+            panel1.Controls.Add(Redo);
+            panel1.Controls.Add(Undo);
             panel1.Controls.Add(groupBox3);
             panel1.Controls.Add(groupBox2);
             panel1.Controls.Add(groupBox1);
@@ -78,6 +82,30 @@
             panel1.Size = new Size(679, 112);
             panel1.TabIndex = 1;
             // 
+            // Redo
+            // 
+            Redo.Enabled = false;
+            Redo.Location = new Point(610, 65);
+            Redo.Name = "Redo";
+            Redo.Size = new Size(55, 45);
+            Redo.TabIndex = 19;
+            Redo.Tag = "";
+            Redo.Text = "--> redo";
+            Redo.UseVisualStyleBackColor = true;
+            Redo.Click += GetChange;
+            // 
+            // Undo
+            // 
+            Undo.Enabled = false;
+            Undo.Location = new Point(610, 11);
+            Undo.Name = "Undo";
+            Undo.Size = new Size(55, 45);
+            Undo.TabIndex = 2;
+            Undo.Tag = "";
+            Undo.Text = "<-- undo";
+            Undo.UseVisualStyleBackColor = true;
+            Undo.Click += GetChange;
+            // 
             // groupBox3
             // 
             groupBox3.Controls.Add(Sepia_filter);
@@ -88,6 +116,18 @@
             groupBox3.TabIndex = 18;
             groupBox3.TabStop = false;
             groupBox3.Text = "Change colors";
+            // 
+            // Sepia_filter
+            // 
+            Sepia_filter.Enabled = false;
+            Sepia_filter.Location = new Point(86, 20);
+            Sepia_filter.Name = "Sepia_filter";
+            Sepia_filter.Size = new Size(81, 23);
+            Sepia_filter.TabIndex = 3;
+            Sepia_filter.Tag = "sepia_filter";
+            Sepia_filter.Text = "sepia filter";
+            Sepia_filter.UseVisualStyleBackColor = true;
+            Sepia_filter.Click += ModifyImage;
             // 
             // Invert_filter
             // 
@@ -356,18 +396,6 @@
             PictureBox.TabIndex = 2;
             PictureBox.TabStop = false;
             // 
-            // Sepia_filter
-            // 
-            Sepia_filter.Enabled = false;
-            Sepia_filter.Location = new Point(86, 20);
-            Sepia_filter.Name = "Sepia_filter";
-            Sepia_filter.Size = new Size(81, 23);
-            Sepia_filter.TabIndex = 3;
-            Sepia_filter.Tag = "sepia_filter";
-            Sepia_filter.Text = "sepia filter";
-            Sepia_filter.UseVisualStyleBackColor = true;
-            Sepia_filter.Click += ModifyImage;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -420,5 +448,7 @@
         private GroupBox groupBox3;
         private Button Invert_filter;
         private Button Sepia_filter;
+        private Button Undo;
+        private Button Redo;
     }
 }
