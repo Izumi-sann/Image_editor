@@ -18,8 +18,6 @@
  * 
  */
 /*TODO
- * reset color values when new image laod
- * return to previows
  */
 
 using System.Drawing;
@@ -43,7 +41,7 @@ namespace _ModificaImmagine_29_11_24
         bool invert_flag = false;
 
         //salvataggi delle modifiche per backtraking, salva base_image e PictureBox.Image, l'immagine è salvata per ogni cambiamento, per un massimo di 20 passi
-        List<(Image base_image, Image picturebox_image)> Image_versions;
+        List<(Image base_image, Image picturebox_image, int[] color_values)> Image_versions;
         int version_counter = 0;
 
         public Form1() { InitializeComponent(); }
@@ -65,8 +63,7 @@ namespace _ModificaImmagine_29_11_24
             base_image = new Bitmap(ImagePath);
 
             //insert base_image as the first version
-            Image_versions = new List<(Image base_image, Image picturebox_image)>();
-            Image_versions.Add((base_image, PictureBox.Image));
+            Image_versions = new List<(Image base_image, Image picturebox_image, int[] color_values)>();
             version_counter = 0;
 
             //enable various buttons
@@ -77,6 +74,8 @@ namespace _ModificaImmagine_29_11_24
             red_value_output.Text = "0";
             green_value_output.Text = "0";
             blue_value_output.Text = "0";
+
+            Image_versions.Add((base_image, PictureBox.Image, new int[] {colorValuesRGB[0], colorValuesRGB[1], colorValuesRGB[2]}));
         }
 
         /// <summary>
@@ -149,9 +148,10 @@ namespace _ModificaImmagine_29_11_24
 
             //manage image version
             try {
-                Image_versions[version_counter+1] = (base_image, PictureBox.Image);
+                //Image_versions[version_counter+1] = (base_image, PictureBox.Image, new int[] { colorValuesRGB[0], colorValuesRGB[1], colorValuesRGB[2] });
+                Image_versions.Insert(version_counter + 1, (base_image, PictureBox.Image, new int[] { colorValuesRGB[0], colorValuesRGB[1], colorValuesRGB[2] }));
             } catch { 
-                Image_versions.Add((base_image, PictureBox.Image));
+                Image_versions.Add((base_image, PictureBox.Image, new int[] { colorValuesRGB[0], colorValuesRGB[1], colorValuesRGB[2] }));
             }
 
             version_counter++;
@@ -490,13 +490,18 @@ namespace _ModificaImmagine_29_11_24
             string todo = ((Button)sender).Name;
             version_counter = todo == "Undo" ? version_counter-1 : version_counter+1;
 
-            (Image base_image_last, Image picturebox_image_last) recod = Image_versions[version_counter];//last saved
+            (Image base_image_last, Image picturebox_image_last, int[] color_values) recod = Image_versions[version_counter];//last saved
             base_image = recod.base_image_last;
             PictureBox.Image = recod.picturebox_image_last;
+            colorValuesRGB = new int[] { recod.color_values[0], recod.color_values[1], recod.color_values[2] };
+
+
+            red_value_output.Text = colorValuesRGB[0].ToString();
+            green_value_output.Text = colorValuesRGB[1].ToString();
+            blue_value_output.Text = colorValuesRGB[2].ToString();
 
             EnableButtons("version_counter");
         }
-
 
         /// <summary>
         /// used to enable or disable certain buttons, based on needs. can be "disable_processing" or "enable_all"

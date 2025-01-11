@@ -56,6 +56,8 @@
             save_image = new Button();
             load_image = new Button();
             PictureBox = new PictureBox();
+            Rotate_left = new Button();
+            button1 = new Button();
             panel1.SuspendLayout();
             groupBox3.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -76,18 +78,18 @@
             panel1.Controls.Add(pictureBox1);
             panel1.Controls.Add(save_image);
             panel1.Controls.Add(load_image);
-            panel1.Location = new Point(10, 256);
-            panel1.Margin = new Padding(3, 2, 3, 2);
+            panel1.Location = new Point(11, 458);
             panel1.Name = "panel1";
-            panel1.Size = new Size(679, 112);
+            panel1.Size = new Size(1019, 149);
             panel1.TabIndex = 1;
             // 
             // Redo
             // 
             Redo.Enabled = false;
-            Redo.Location = new Point(610, 65);
+            Redo.Location = new Point(944, 87);
+            Redo.Margin = new Padding(3, 4, 3, 4);
             Redo.Name = "Redo";
-            Redo.Size = new Size(55, 45);
+            Redo.Size = new Size(63, 60);
             Redo.TabIndex = 19;
             Redo.Tag = "";
             Redo.Text = "--> redo";
@@ -97,9 +99,10 @@
             // Undo
             // 
             Undo.Enabled = false;
-            Undo.Location = new Point(610, 11);
+            Undo.Location = new Point(944, 15);
+            Undo.Margin = new Padding(3, 4, 3, 4);
             Undo.Name = "Undo";
-            Undo.Size = new Size(55, 45);
+            Undo.Size = new Size(63, 60);
             Undo.TabIndex = 2;
             Undo.Tag = "";
             Undo.Text = "<-- undo";
@@ -110,19 +113,22 @@
             // 
             groupBox3.Controls.Add(Sepia_filter);
             groupBox3.Controls.Add(Invert_filter);
-            groupBox3.Location = new Point(429, 60);
+            groupBox3.Location = new Point(731, 4);
+            groupBox3.Margin = new Padding(3, 4, 3, 4);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(175, 49);
+            groupBox3.Padding = new Padding(3, 4, 3, 4);
+            groupBox3.Size = new Size(200, 71);
             groupBox3.TabIndex = 18;
             groupBox3.TabStop = false;
-            groupBox3.Text = "Change colors";
+            groupBox3.Text = "Filter";
             // 
             // Sepia_filter
             // 
             Sepia_filter.Enabled = false;
-            Sepia_filter.Location = new Point(86, 20);
+            Sepia_filter.Location = new Point(97, 29);
+            Sepia_filter.Margin = new Padding(3, 4, 3, 4);
             Sepia_filter.Name = "Sepia_filter";
-            Sepia_filter.Size = new Size(81, 23);
+            Sepia_filter.Size = new Size(93, 31);
             Sepia_filter.TabIndex = 3;
             Sepia_filter.Tag = "sepia_filter";
             Sepia_filter.Text = "sepia filter";
@@ -132,9 +138,10 @@
             // Invert_filter
             // 
             Invert_filter.Enabled = false;
-            Invert_filter.Location = new Point(6, 20);
+            Invert_filter.Location = new Point(6, 29);
+            Invert_filter.Margin = new Padding(3, 4, 3, 4);
             Invert_filter.Name = "Invert_filter";
-            Invert_filter.Size = new Size(74, 23);
+            Invert_filter.Size = new Size(85, 31);
             Invert_filter.TabIndex = 2;
             Invert_filter.Tag = "invert_filter";
             Invert_filter.Text = "invert filter";
@@ -143,11 +150,15 @@
             // 
             // groupBox2
             // 
+            groupBox2.Controls.Add(button1);
+            groupBox2.Controls.Add(Rotate_left);
             groupBox2.Controls.Add(Reverse_orientation_Horizontal);
             groupBox2.Controls.Add(Reverse_orientation_Vertical);
-            groupBox2.Location = new Point(429, 3);
+            groupBox2.Location = new Point(525, 4);
+            groupBox2.Margin = new Padding(3, 4, 3, 4);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(175, 53);
+            groupBox2.Padding = new Padding(3, 4, 3, 4);
+            groupBox2.Size = new Size(200, 112);
             groupBox2.TabIndex = 17;
             groupBox2.TabStop = false;
             groupBox2.Text = "modify orientation";
@@ -155,9 +166,10 @@
             // Reverse_orientation_Horizontal
             // 
             Reverse_orientation_Horizontal.Enabled = false;
-            Reverse_orientation_Horizontal.Location = new Point(86, 22);
+            Reverse_orientation_Horizontal.Location = new Point(98, 29);
+            Reverse_orientation_Horizontal.Margin = new Padding(3, 4, 3, 4);
             Reverse_orientation_Horizontal.Name = "Reverse_orientation_Horizontal";
-            Reverse_orientation_Horizontal.Size = new Size(74, 23);
+            Reverse_orientation_Horizontal.Size = new Size(85, 31);
             Reverse_orientation_Horizontal.TabIndex = 1;
             Reverse_orientation_Horizontal.Tag = "reverse_horizontal";
             Reverse_orientation_Horizontal.Text = "Horizontal";
@@ -167,9 +179,10 @@
             // Reverse_orientation_Vertical
             // 
             Reverse_orientation_Vertical.Enabled = false;
-            Reverse_orientation_Vertical.Location = new Point(6, 22);
+            Reverse_orientation_Vertical.Location = new Point(7, 29);
+            Reverse_orientation_Vertical.Margin = new Padding(3, 4, 3, 4);
             Reverse_orientation_Vertical.Name = "Reverse_orientation_Vertical";
-            Reverse_orientation_Vertical.Size = new Size(74, 23);
+            Reverse_orientation_Vertical.Size = new Size(85, 31);
             Reverse_orientation_Vertical.TabIndex = 0;
             Reverse_orientation_Vertical.Tag = "reverse_vertical";
             Reverse_orientation_Vertical.Text = "Vertical";
@@ -192,9 +205,11 @@
             groupBox1.Controls.Add(add_green);
             groupBox1.Controls.Add(remove_red);
             groupBox1.Controls.Add(add_red);
-            groupBox1.Location = new Point(108, 3);
+            groupBox1.Location = new Point(123, 4);
+            groupBox1.Margin = new Padding(3, 4, 3, 4);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(315, 106);
+            groupBox1.Padding = new Padding(3, 4, 3, 4);
+            groupBox1.Size = new Size(396, 141);
             groupBox1.TabIndex = 16;
             groupBox1.TabStop = false;
             groupBox1.Text = "modify colors values";
@@ -203,9 +218,9 @@
             // 
             blue_value_output.BackColor = SystemColors.ControlLight;
             blue_value_output.BorderStyle = BorderStyle.FixedSingle;
-            blue_value_output.Location = new Point(152, 86);
+            blue_value_output.Location = new Point(174, 115);
             blue_value_output.Name = "blue_value_output";
-            blue_value_output.Size = new Size(67, 16);
+            blue_value_output.Size = new Size(76, 21);
             blue_value_output.TabIndex = 15;
             blue_value_output.Text = "0";
             // 
@@ -213,9 +228,9 @@
             // 
             green_value_output.BackColor = SystemColors.ControlLight;
             green_value_output.BorderStyle = BorderStyle.FixedSingle;
-            green_value_output.Location = new Point(78, 86);
+            green_value_output.Location = new Point(89, 115);
             green_value_output.Name = "green_value_output";
-            green_value_output.Size = new Size(67, 16);
+            green_value_output.Size = new Size(76, 21);
             green_value_output.TabIndex = 14;
             green_value_output.Text = "0";
             // 
@@ -223,45 +238,45 @@
             // 
             red_value_output.BackColor = SystemColors.ControlLight;
             red_value_output.BorderStyle = BorderStyle.FixedSingle;
-            red_value_output.Location = new Point(4, 86);
+            red_value_output.Location = new Point(5, 115);
             red_value_output.Name = "red_value_output";
-            red_value_output.Size = new Size(67, 16);
+            red_value_output.Size = new Size(76, 21);
             red_value_output.TabIndex = 13;
             red_value_output.Text = "0";
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(151, 18);
+            label4.Location = new Point(173, 24);
             label4.Name = "label4";
-            label4.Size = new Size(33, 15);
+            label4.Size = new Size(41, 20);
             label4.TabIndex = 12;
             label4.Text = "blue:";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(77, 18);
+            label3.Location = new Point(88, 24);
             label3.Name = "label3";
-            label3.Size = new Size(40, 15);
+            label3.Size = new Size(50, 20);
             label3.TabIndex = 11;
             label3.Text = "green:";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(4, 18);
+            label2.Location = new Point(5, 24);
             label2.Name = "label2";
-            label2.Size = new Size(27, 15);
+            label2.Size = new Size(34, 20);
             label2.TabIndex = 10;
             label2.Text = "red:";
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(225, 18);
+            label1.Location = new Point(269, 27);
             label1.Name = "label1";
-            label1.Size = new Size(86, 15);
+            label1.Size = new Size(108, 20);
             label1.TabIndex = 9;
             label1.Text = "color variation:";
             // 
@@ -269,20 +284,20 @@
             // 
             input_colorVariation.Enabled = false;
             input_colorVariation.Increment = new decimal(new int[] { 10, 0, 0, 0 });
-            input_colorVariation.Location = new Point(225, 37);
+            input_colorVariation.Location = new Point(269, 52);
+            input_colorVariation.Margin = new Padding(3, 4, 3, 4);
             input_colorVariation.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
             input_colorVariation.Name = "input_colorVariation";
-            input_colorVariation.Size = new Size(55, 23);
+            input_colorVariation.Size = new Size(63, 27);
             input_colorVariation.TabIndex = 8;
             input_colorVariation.Value = new decimal(new int[] { 10, 0, 0, 0 });
             // 
             // remove_blue
             // 
             remove_blue.Enabled = false;
-            remove_blue.Location = new Point(151, 63);
-            remove_blue.Margin = new Padding(3, 2, 3, 2);
+            remove_blue.Location = new Point(173, 84);
             remove_blue.Name = "remove_blue";
-            remove_blue.Size = new Size(68, 21);
+            remove_blue.Size = new Size(78, 28);
             remove_blue.TabIndex = 6;
             remove_blue.Tag = "change_color";
             remove_blue.Text = "blue -";
@@ -292,10 +307,9 @@
             // add_blue
             // 
             add_blue.Enabled = false;
-            add_blue.Location = new Point(151, 39);
-            add_blue.Margin = new Padding(3, 2, 3, 2);
+            add_blue.Location = new Point(173, 52);
             add_blue.Name = "add_blue";
-            add_blue.Size = new Size(68, 21);
+            add_blue.Size = new Size(78, 28);
             add_blue.TabIndex = 5;
             add_blue.Tag = "change_color";
             add_blue.Text = "blue +";
@@ -305,10 +319,9 @@
             // remove_green
             // 
             remove_green.Enabled = false;
-            remove_green.Location = new Point(77, 63);
-            remove_green.Margin = new Padding(3, 2, 3, 2);
+            remove_green.Location = new Point(88, 84);
             remove_green.Name = "remove_green";
-            remove_green.Size = new Size(68, 21);
+            remove_green.Size = new Size(78, 28);
             remove_green.TabIndex = 4;
             remove_green.Tag = "change_color";
             remove_green.Text = "green -";
@@ -318,10 +331,9 @@
             // add_green
             // 
             add_green.Enabled = false;
-            add_green.Location = new Point(77, 39);
-            add_green.Margin = new Padding(3, 2, 3, 2);
+            add_green.Location = new Point(88, 52);
             add_green.Name = "add_green";
-            add_green.Size = new Size(68, 21);
+            add_green.Size = new Size(78, 28);
             add_green.TabIndex = 3;
             add_green.Tag = "change_color";
             add_green.Text = "green +";
@@ -331,10 +343,9 @@
             // remove_red
             // 
             remove_red.Enabled = false;
-            remove_red.Location = new Point(3, 63);
-            remove_red.Margin = new Padding(3, 2, 3, 2);
+            remove_red.Location = new Point(3, 84);
             remove_red.Name = "remove_red";
-            remove_red.Size = new Size(68, 21);
+            remove_red.Size = new Size(78, 28);
             remove_red.TabIndex = 2;
             remove_red.Tag = "change_color";
             remove_red.Text = "red -";
@@ -344,10 +355,9 @@
             // add_red
             // 
             add_red.Enabled = false;
-            add_red.Location = new Point(3, 39);
-            add_red.Margin = new Padding(3, 2, 3, 2);
+            add_red.Location = new Point(3, 52);
             add_red.Name = "add_red";
-            add_red.Size = new Size(68, 21);
+            add_red.Size = new Size(78, 28);
             add_red.TabIndex = 1;
             add_red.Tag = "change_color";
             add_red.Text = "red +";
@@ -356,10 +366,9 @@
             // 
             // pictureBox1
             // 
-            pictureBox1.Location = new Point(0, -245);
-            pictureBox1.Margin = new Padding(3, 2, 3, 2);
+            pictureBox1.Location = new Point(0, -327);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(679, 231);
+            pictureBox1.Size = new Size(776, 308);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 2;
             pictureBox1.TabStop = false;
@@ -367,10 +376,9 @@
             // save_image
             // 
             save_image.Enabled = false;
-            save_image.Location = new Point(13, 60);
-            save_image.Margin = new Padding(3, 2, 3, 2);
+            save_image.Location = new Point(15, 80);
             save_image.Name = "save_image";
-            save_image.Size = new Size(76, 45);
+            save_image.Size = new Size(87, 60);
             save_image.TabIndex = 7;
             save_image.Text = "Save Picture";
             save_image.UseVisualStyleBackColor = true;
@@ -378,10 +386,9 @@
             // 
             // load_image
             // 
-            load_image.Location = new Point(13, 11);
-            load_image.Margin = new Padding(3, 2, 3, 2);
+            load_image.Location = new Point(15, 15);
             load_image.Name = "load_image";
-            load_image.Size = new Size(76, 45);
+            load_image.Size = new Size(87, 60);
             load_image.TabIndex = 0;
             load_image.Text = "Load Picture";
             load_image.UseVisualStyleBackColor = true;
@@ -389,23 +396,41 @@
             // 
             // PictureBox
             // 
-            PictureBox.Location = new Point(10, 12);
+            PictureBox.Location = new Point(11, 13);
+            PictureBox.Margin = new Padding(3, 4, 3, 4);
             PictureBox.Name = "PictureBox";
-            PictureBox.Size = new Size(679, 230);
+            PictureBox.Size = new Size(1019, 438);
             PictureBox.SizeMode = PictureBoxSizeMode.Zoom;
             PictureBox.TabIndex = 2;
             PictureBox.TabStop = false;
             // 
+            // Rotate_left
+            // 
+            Rotate_left.Location = new Point(7, 67);
+            Rotate_left.Name = "Rotate_left";
+            Rotate_left.Size = new Size(85, 29);
+            Rotate_left.TabIndex = 2;
+            Rotate_left.Text = "90° left";
+            Rotate_left.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(98, 67);
+            button1.Name = "button1";
+            button1.Size = new Size(85, 29);
+            button1.TabIndex = 3;
+            button1.Text = "90° left";
+            button1.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLight;
-            ClientSize = new Size(700, 378);
+            ClientSize = new Size(1042, 619);
             Controls.Add(PictureBox);
             Controls.Add(panel1);
             FormBorderStyle = FormBorderStyle.FixedSingle;
-            Margin = new Padding(3, 2, 3, 2);
             MaximizeBox = false;
             Name = "Form1";
             Text = "Image Editor";
@@ -450,5 +475,7 @@
         private Button Sepia_filter;
         private Button Undo;
         private Button Redo;
+        private Button button1;
+        private Button Rotate_left;
     }
 }

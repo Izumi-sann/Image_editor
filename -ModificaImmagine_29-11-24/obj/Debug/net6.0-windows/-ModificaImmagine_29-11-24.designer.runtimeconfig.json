@@ -12,8 +12,8 @@
       }
     ],
     "additionalProbingPaths": [
-      "C:\\Users\\slega\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\slega\\.nuget\\packages"
+      "C:\\Users\\gamba\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\gamba\\.nuget\\packages"
     ],
     "configProperties": {
       "Microsoft.NETCore.DotNetHostPolicy.SetAppPaths": true

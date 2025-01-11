@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\slega\\Desktop\\C#\\esercizi_scuola\\esercizi_lezione\\Lab\\-ModificaImmagine_29-11-24\\-ModificaImmagine_29-11-24\\-ModificaImmagine_29-11-24.csproj": {}
+    "C:\\Users\\gamba\\Source\\Repos\\Image_editor\\-ModificaImmagine_29-11-24\\-ModificaImmagine_29-11-24.csproj": {}
   },
   "projects": {
-    "C:\\Users\\slega\\Desktop\\C#\\esercizi_scuola\\esercizi_lezione\\Lab\\-ModificaImmagine_29-11-24\\-ModificaImmagine_29-11-24\\-ModificaImmagine_29-11-24.csproj": {
+    "C:\\Users\\gamba\\Source\\Repos\\Image_editor\\-ModificaImmagine_29-11-24\\-ModificaImmagine_29-11-24.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\slega\\Desktop\\C#\\esercizi_scuola\\esercizi_lezione\\Lab\\-ModificaImmagine_29-11-24\\-ModificaImmagine_29-11-24\\-ModificaImmagine_29-11-24.csproj",
+        "projectUniqueName": "C:\\Users\\gamba\\Source\\Repos\\Image_editor\\-ModificaImmagine_29-11-24\\-ModificaImmagine_29-11-24.csproj",
         "projectName": "-ModificaImmagine_29-11-24",
-        "projectPath": "C:\\Users\\slega\\Desktop\\C#\\esercizi_scuola\\esercizi_lezione\\Lab\\-ModificaImmagine_29-11-24\\-ModificaImmagine_29-11-24\\-ModificaImmagine_29-11-24.csproj",
-        "packagesPath": "C:\\Users\\slega\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\slega\\Desktop\\C#\\esercizi_scuola\\esercizi_lezione\\Lab\\-ModificaImmagine_29-11-24\\-ModificaImmagine_29-11-24\\obj\\",
+        "projectPath": "C:\\Users\\gamba\\Source\\Repos\\Image_editor\\-ModificaImmagine_29-11-24\\-ModificaImmagine_29-11-24.csproj",
+        "packagesPath": "C:\\Users\\gamba\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\gamba\\Source\\Repos\\Image_editor\\-ModificaImmagine_29-11-24\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\slega\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\gamba\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -55,24 +55,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[6.0.36, 6.0.36]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[6.0.36, 6.0.36]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[6.0.36, 6.0.36]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[6.0.36, 6.0.36]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
